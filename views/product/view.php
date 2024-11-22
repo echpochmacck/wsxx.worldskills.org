@@ -1,5 +1,6 @@
 <?php
 
+use app\models\File;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -18,15 +19,25 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Update', ["/product/update/$model->GTIN"], ['class' => 'btn btn-primary']) ?>
 
-        <?php if($model->is_hidden):?>
-        <?= Html::a('Delete', ["/product/delete/$model->GTIN"], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-        <?php endif?>
+        <?php if ($model->is_hidden): ?>
+            <?= Html::a('Delete', ["/product/delete/$model->GTIN"], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => 'Are you sure you want to delete this item?',
+                    'method' => 'post',
+                ],
+            ]) ?>
+        <?php else: ?>
+
+            <?= Html::a('Hide', ["/product/hide/$model->GTIN"], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => 'Are you sure you want to hide this item?',
+                    'method' => 'post',
+                ],
+            ]) ?>
+        <?php endif ?>
+
     </p>
 
     <?= DetailView::widget([
@@ -43,9 +54,26 @@ $this->params['breadcrumbs'][] = $this->title;
             'weight',
             'unit_weight',
             'gross_weight',
-            'file_id',
             'company_id',
-            'is_hidden'
+            'is_hidden',
+
+            [
+                'label' => 'IMG',
+                'value' => function ($model) {
+
+                    if ($file = File::findOne(['product_id' => $model->id])) {
+                        return  Html::img("/src/$file->name", ['width' => '300px', 'height' => '200px']);
+                    } else {
+                        return 'adasd';
+                    }
+                },
+                'format' => 'html',
+            ],
+            [
+                'label' => 'Удалить фото',
+                'value' => fn($model) => Html::a('удалить', ["/product/file/$model->GTIN"], ['class' => 'btn btn-success']),
+                'format' => 'html',
+            ],
         ],
     ]) ?>
 

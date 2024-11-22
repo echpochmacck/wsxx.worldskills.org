@@ -17,6 +17,8 @@ use yii\web\UploadedFile;
  */
 class ProductController extends Controller
 {
+
+    public $gtin_arr;
     /**
      * @inheritDoc
      */
@@ -148,7 +150,26 @@ class ProductController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+        if ($model->load($this->request->post())) {
+            $model->file = UploadedFile::getinstance($model, 'file');
+            if ($model->file && $pathFile = $model->upload()) {
+                $model->gross_weight = 12;
+                $model->save(false);
+                if ($file = File::findOne(['product_id' => $model->id])) {
+                    if (file_exists('src/' . $file->name)) {
+                        unlink('src/' . $file->name);
+                    }
+                } else {
+                    $file = new File();
+                }
+                $file->product_id = $model->id;
+                $file->name = $pathFile;
+                $file->extension = $model->file->extension;
+
+                // var_dump($file);die;
+                $file->save(false);
+            }
+            $model->save(false);
             return $this->redirect("/product/$model->GTIN");
         }
 
@@ -168,7 +189,7 @@ class ProductController extends Controller
     {
         // var_dump('sd');die;
         $model = $this->findModel($id);
-        
+
         if ($model->is_hidden) {
             $model->delete();
         }
@@ -190,5 +211,41 @@ class ProductController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+
+    public function actionDeleteFile($id)
+    {
+        $model = $this->findModel($id);
+        if ($model) {
+            $file = File::findOne(['product_id' => $model->id]);
+            if ($file && file_exists("src/$file->name")) {
+                $file->delete();
+                unlink("src/$file->name");
+                return $this->redirect("/product/$model->GTIN");
+            }
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+        throw new NotFoundHttpException('The requested page does not exist.');
+
+        // return $this->render('update', [
+        //     'model' => $model,
+        // ]);
+    }
+
+
+    public function actionHide($id)
+    {
+        $model = $this->findModel($id);
+        if ($model) {
+            $model->is_hidden = 1;
+            $model->save(false);
+            return $this->redirect("/product/$model->GTIN");
+        }
+        throw new NotFoundHttpException('The requested page does not exist.');
+
+        // return $this->render('update', [
+        //     'model' => $model,
+        // ]);
     }
 }

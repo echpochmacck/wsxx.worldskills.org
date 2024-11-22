@@ -27,6 +27,10 @@ class Product extends \yii\db\ActiveRecord
 {
 
     public $file;
+    public $file_name;
+    public $gtin_arr;
+
+
     /**
      * {@inheritdoc}
      */
@@ -49,7 +53,8 @@ class Product extends \yii\db\ActiveRecord
             ['unit_weight', 'string', 'min' => 1, 'max' => 3],
             [['name', 'french_name', 'brand', 'country'], 'string', 'max' => 255],
             [['company_id'], 'exist', 'skipOnError' => true, 'targetClass' => Company::class, 'targetAttribute' => ['company_id' => 'id']],
-            ['file', 'file', 'maxSize' => 100 * 1024 * 1024, 'extensions' => 'png, jpeg, jpg']
+            ['file', 'file', 'maxSize' => 100 * 1024 * 1024, 'extensions' => 'png, jpeg, jpg'],
+            ['gtin_arr', 'safe']
 
         ];
     }
@@ -90,5 +95,19 @@ class Product extends \yii\db\ActiveRecord
         } else {
             return false;
         }
+    }
+
+    public static function checkGTIN($arr)
+    {
+
+        // var_dump($arr);die;
+        $query =  self::find()
+            ->select('GTIN')
+            ->filterWhere(['GTIN' => $arr])
+            ->asArray()
+            ->all()
+            ;
+            // var_dump($query->createCommand()->getRawSql());
+            return $query;
     }
 }

@@ -18,17 +18,17 @@ class SiteController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::class,
-                'only' => ['logout'],
-                'rules' => [
-                    [
-                        'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
+            // 'access' => [
+            //     'class' => AccessControl::class,
+            //     'only' => ['logout'],
+            //     'rules' => [
+            //         [
+            //             'actions' => ['logout'],
+            //             'allow' => true,
+            //             'roles' => ['@'],
+            //         ],
+            //     ],
+            // ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
@@ -61,9 +61,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        if (!Yii::$app->user->isGuest) {
-            return $this->render('index');
-        }
+        return $this->render('index');
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {

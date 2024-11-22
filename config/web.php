@@ -17,7 +17,7 @@ $config = [
             'cookieValidationKey' => 'asd',
             'baseUrl' => '',
         ],
-        
+
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
@@ -44,23 +44,33 @@ $config = [
             ],
         ],
         'db' => $db,
-        
+
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-            '/login' => 'site/login',
-            // '/product/delete' => 'product/delete',
-            '/product/new' => 'product/create',
-            '/product/delete/<id>' => 'product/delete',
-            '/product/update/<id>' => 'product/update',
-            '/product/<id>' => 'product/view',
-            '/product' => 'product/index',
+                'something/<controller>/<action>' => '<controller>/<action>',
+                
+                '/login' => 'site/login',
+                // '/product/delete' => 'product/delete',
+                '/product/new' => 'product/create',
+                '/product/delete/<id>' => 'product/delete',
+                '/product/update/<id>' => 'product/update',
+                '/product/<id>' => 'product/view',
+                '/product/file/<id>' => 'product/delete-file',
+                '/product/hide/<id>' => 'product/hide',
+
+
+                '/product/' => 'product/index',
+
+                '/01/<id>' => 'public/view',
+
+
 
 
             ],
         ],
-        
+
     ],
     'params' => $params,
 ];
