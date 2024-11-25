@@ -49,10 +49,27 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                'something/<controller>/<action>' => '<controller>/<action>',
+                // 'something/<controller>/<id>' => '<controller>/view',
+                // 'something/<controller>' => '<controller>/view',
+
+                // 'something/<controller>/<action>/<id:\d+>' => '<controller>/<action>',
+                // 'something/<controller>/<action>' => '<controller>/<action>',
+                // 'something/<controller>/new' => 'product/create',
                 
+
+
+                // 'something/login' => 'site/login',
+                // 'something/product/new' => 'product/create',
+                // 'something/product/delete/<id:\d+>' => 'product/delete',
+                // 'something/product/update/<id:\d+>' => 'product/update',
+                // 'something/product/<id>' => 'product/view',
+                // 'something/product/file/<id:\d+>' => 'product/delete-file',
+                // 'something/product/hide/<id:\d+>' => 'product/hide',
+                // 'something/product/' => 'product/index',
+                // 'something/01/<id:\d+>' => 'public/view',
                 '/login' => 'site/login',
-                // '/product/delete' => 'product/delete',
+                '/product/delete' => 'product/delete',
+
                 '/product/new' => 'product/create',
                 '/product/delete/<id>' => 'product/delete',
                 '/product/update/<id>' => 'product/update',
@@ -61,9 +78,27 @@ $config = [
                 '/product/hide/<id>' => 'product/hide',
 
 
-                '/product/' => 'product/index',
+                // '/product/' => 'product/index',
 
                 '/01/<id>' => 'public/view',
+
+
+                'something/01/<id>' => 'public/view',
+
+                
+                'something/product/new' => 'something/product/create',
+                'something/product/deactivate' => 'something/product/deactivate',
+                
+                'something/product/update/<id>' => 'something/product/update',
+
+                'something/product/<id>' => 'something/product/view',
+
+                'something/login' => 'site/login',
+                'something/product/delete' => 'something/product/delete',
+
+                'something/product/delete/<id>' => 'something/product/delete',
+                'something/product/file/<id>' => 'something/product/delete-file',
+                'something/product/hide/<id>' => 'something/product/hide',
 
 
 
@@ -71,6 +106,12 @@ $config = [
             ],
         ],
 
+    ],
+     'modules' => [
+        'something' => [
+            'class' => 'app\modules\something\Module',
+            'defaultRoute' => '/site/'
+        ],
     ],
     'params' => $params,
 ];

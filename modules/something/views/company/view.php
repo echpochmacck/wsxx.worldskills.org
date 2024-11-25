@@ -13,7 +13,7 @@ use yii\widgets\DetailView;
 /** @var app\models\company $model */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Companies', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Companies', 'url' => ['/something/company']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -21,8 +21,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
+    <?php if ($model->isActivate):?>
     <p>
-        <?= Html::a('Deactivate', ['deactivate', 'id' => $model->id], [
+        <?= Html::a('Deactivate', ['/something/company/deactivate/', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -30,7 +31,9 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
+    <?php endif ?>
 
+        
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -78,7 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
 
                 'label' => 'View',
-                'value' => fn($model) => Html::a('Vie', ["/product/$model->GTIN"], ['class' => 'btn btn-danger']),
+                'value' => fn($model) => Html::a('Vie', ["/something/product/$model->GTIN"], ['class' => 'btn btn-danger']),
                 'format' => 'html'
             ],
 

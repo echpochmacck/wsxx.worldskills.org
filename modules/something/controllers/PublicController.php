@@ -1,6 +1,7 @@
 <?php
 
-namespace app\controllers;
+namespace app\modules\something\controllers;
+
 
 use app\models\Product;
 use Yii;
